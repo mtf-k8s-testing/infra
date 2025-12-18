@@ -1,0 +1,54 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: kong
+  namespace: kong
+spec:
+  interval: 5m
+  releaseName: kong-ingress-controller
+  chart:
+    spec:
+      sourceRef:
+        kind: HelmRepository
+        name: kong
+      chart: kong
+      version: 2.47.0
+  values:
+    extraLabels:
+      env: ${values_env} # TODO: see if this exists in the real deployment
+    admin:
+      enabled: false
+      type: ClusterIP
+      http:
+        enabled: true
+    deployment:
+      kong:
+        enabled: true
+    env:
+      database: "off"
+      log_level: error
+      real_ip_header: X-Forwarded-For
+      real_ip_recursive: on
+      headers: latency_tokens, X-Kong-Request-Id
+      ssl_unsafe_legacy_renegotiation: "on"
+      nginx_proxy_proxy_ssl_conf_command: "Options +UnsafeLegacyRenegotiation"
+      KONG_NGINX_PROXY_PROXY_SSL_CONF_COMMAND: "Options UnsafeLegacyRenegotiation"
+      nginx_proxy_large_client_header_buffers: "8 24k"
+      dt_nginx_force_runtime_instrumentation: "on"
+    image:
+      repository: kong/kong-gateway
+      tag: "3.9"
+    ingressController:
+      enabled: true
+      image:
+        repository: kong/kubernetes-ingress-controller
+        tag: "3.4.1"
+    manager:
+      enabled: false
+    portal:
+      enabled: false
+    portalapi:
+      enabled: false
+    postgresql:
+      enabled: false
