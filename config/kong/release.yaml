@@ -15,8 +15,6 @@ spec:
       chart: kong
       version: 2.47.0
   values:
-    extraLabels:
-      env: ${values_env} # TODO: see if this exists in the real deployment
     admin:
       enabled: false
       type: ClusterIP
