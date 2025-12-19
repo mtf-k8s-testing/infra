@@ -35,7 +35,8 @@ spec:
       nginx_proxy_large_client_header_buffers: "8 24k"
       dt_nginx_force_runtime_instrumentation: "on"
     image:
-      repository: kong/kong-gateway
+      #repository: kong/kong-gateway
+      repository: kong
       tag: "3.9"
     ingressController:
       enabled: true
