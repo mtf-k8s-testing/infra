@@ -16,7 +16,7 @@ spec:
       version: 2.47.0
   values:
     admin:
-      enabled: false
+      enabled: true
       type: ClusterIP
       http:
         enabled: true
